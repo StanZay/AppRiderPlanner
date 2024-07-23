@@ -6,12 +6,42 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
 
 export default function InputAdornments() {
     const [trainingType, setTrainingType] = React.useState('');
+    const [trainingOptions, setTrainingOptions] = React.useState([
+        { value: 'dressage', label: 'Dressage', color: 'blue' },
+        { value: 'jumping', label: 'Jumping', color: 'green' },
+        { value: 'cross-country', label: 'Cross-Country', color: 'red' },
+        { value: 'endurance', label: 'Endurance', color: 'purple' },
+    ]);
+    const [open, setOpen] = React.useState(false);
+    const [newTraining, setNewTraining] = React.useState('');
+    const [newColor, setNewColor] = React.useState('');
 
     const handleChange = (event) => {
         setTrainingType(event.target.value);
+    };
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleAddTraining = () => {
+        setTrainingOptions([...trainingOptions, { value: newTraining.toLowerCase(), label: newTraining, color: newColor }]);
+        setNewTraining('');
+        setNewColor('');
+        setOpen(false);
     };
 
     return (
@@ -37,10 +67,14 @@ export default function InputAdornments() {
                         width: '100%' // Ustawienie szerokości Select na 100%
                     }}
                 >
-                    <MenuItem value="dressage">Dressage</MenuItem>
-                    <MenuItem value="jumping">Jumping</MenuItem>
-                    <MenuItem value="cross-country">Cross-Country</MenuItem>
-                    <MenuItem value="endurance">Endurance</MenuItem>
+                    {trainingOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            <span style={{ color: option.color }}>●</span> {option.label}
+                        </MenuItem>
+                    ))}
+                    <MenuItem value="" onClick={handleClickOpen}>
+                        <em>Add Type...</em>
+                    </MenuItem>
                 </Select>
             </FormControl>
             <FormControl fullWidth variant="standard">
@@ -88,6 +122,35 @@ export default function InputAdornments() {
                     }}
                 />
             </FormControl>
+
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Add New Training Type</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="new-training"
+                        label="Training Type"
+                        type="text"
+                        fullWidth
+                        value={newTraining}
+                        onChange={(e) => setNewTraining(e.target.value)}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="new-color"
+                        label="Label Color"
+                        type="text"
+                        fullWidth
+                        value={newColor}
+                        onChange={(e) => setNewColor(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleAddTraining}><b>Add</b></Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }

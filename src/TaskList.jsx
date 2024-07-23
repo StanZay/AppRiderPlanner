@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
-import './TaskList.css';
+import Checkbox from '@mui/material/Checkbox';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import Typography from '@mui/material/Typography';
 
 export default function TaskList({ tasks, onChangeTask, onDeleteTask }) {
     return (
-        <ul className="task-list">
+        <List>
             {tasks.map(task => (
-                <li key={task.id}>
+                <ListItem key={task.id}>
                     <Task
                         task={task}
                         onChange={onChangeTask}
                         onDelete={onDeleteTask}
                     />
-                </li>
+                </ListItem>
             ))}
-        </ul>
+        </List>
     );
 }
 
@@ -22,36 +32,49 @@ function Task({ task, onChange, onDelete }) {
     let taskContent;
     if (isEditing) {
         taskContent = (
-            <>
-                <input
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <TextField
                     value={task.text}
                     onChange={e => {
                         onChange({
                             ...task,
                             text: e.target.value
                         });
-                    }} />
-                <button onClick={() => setIsEditing(false)}>
-                    Save
-                </button>
-            </>
+                    }}
+                    size="small"
+                />
+                <IconButton
+                    color="primary"
+                    onClick={() => setIsEditing(false)}
+                >
+                    <SaveIcon />
+                </IconButton>
+            </Box>
         );
     } else {
         taskContent = (
-            <>
-                <span className={task.done ? 'completed' : ''}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Typography
+                    variant="body1"
+                    component="span"
+                    sx={{ textDecoration: task.done ? 'line-through' : 'none' }}
+                >
                     {task.text}
-                </span>
-                <button onClick={() => setIsEditing(true)}>
-                    Edit
-                </button>
-            </>
+                </Typography>
+                <IconButton
+                    color="primary"
+                    onClick={() => setIsEditing(true)}
+                >
+                    <EditIcon />
+                </IconButton>
+            </Box>
         );
     }
     return (
-        <label className="task-item">
-            <input
-                type="checkbox"
+        <Box
+            sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}
+        >
+            <Checkbox
                 checked={task.done}
                 onChange={e => {
                     onChange({
@@ -59,13 +82,14 @@ function Task({ task, onChange, onDelete }) {
                         done: e.target.checked
                     });
                 }}
-                className="round-checkbox"
             />
             {taskContent}
-            <button onClick={() => onDelete(task.id)}>
-                Delete
-            </button>
-        </label>
+            <IconButton
+                color="secondary"
+                onClick={() => onDelete(task.id)}
+            >
+                <DeleteIcon />
+            </IconButton>
+        </Box>
     );
 }
-
