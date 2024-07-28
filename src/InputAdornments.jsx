@@ -1,19 +1,19 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-export default function InputAdornments() {
+export default function InputAdornments({ onSave }) {
     const [trainingType, setTrainingType] = React.useState('');
     const [trainingOptions, setTrainingOptions] = React.useState([
         { value: 'dressage', label: 'Dressage', color: 'blue' },
@@ -21,50 +21,89 @@ export default function InputAdornments() {
         { value: 'cross-country', label: 'Cross-Country', color: 'red' },
         { value: 'endurance', label: 'Endurance', color: 'purple' },
     ]);
-    const [open, setOpen] = React.useState(false);
-    const [newTraining, setNewTraining] = React.useState('');
+    const [location, setLocation] = React.useState('');
+    const [locationOptions, setLocationOptions] = React.useState([
+        { value: 'arena', label: 'Arena' },
+        { value: 'field', label: 'Field' },
+        { value: 'trail', label: 'Trail' },
+    ]);
+    const [horse, setHorse] = React.useState('');
+    const [horseOptions, setHorseOptions] = React.useState([
+        { value: 'black-beauty', label: 'Black Beauty' },
+        { value: 'sea-biscuit', label: 'Sea Biscuit' },
+    ]);
+    const [trainer, setTrainer] = React.useState('');
+    const [trainerOptions, setTrainerOptions] = React.useState([
+        { value: 'john-duton', label: 'John Duton' },
+        { value: 'jane-doe', label: 'Jane Doe' },
+    ]);
+    const [openDialog, setOpenDialog] = React.useState({ open: false, type: '' });
+    const [newOption, setNewOption] = React.useState('');
     const [newColor, setNewColor] = React.useState('');
+    const [selectedDate, setSelectedDate] = React.useState(null);
 
-    const handleChange = (event) => {
-        setTrainingType(event.target.value);
+    const handleChange = (setter) => (event) => {
+        setter(event.target.value);
     };
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const handleClickOpen = (type) => {
+        setOpenDialog({ open: true, type });
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setOpenDialog({ open: false, type: '' });
     };
 
-    const handleAddTraining = () => {
-        setTrainingOptions([...trainingOptions, { value: newTraining.toLowerCase(), label: newTraining, color: newColor }]);
-        setNewTraining('');
+    const handleAddOption = () => {
+        const { type } = openDialog;
+        if (type === 'training') {
+            setTrainingOptions([...trainingOptions, { value: newOption.toLowerCase(), label: newOption, color: newColor }]);
+        } else if (type === 'location') {
+            setLocationOptions([...locationOptions, { value: newOption.toLowerCase(), label: newOption }]);
+        } else if (type === 'horse') {
+            setHorseOptions([...horseOptions, { value: newOption.toLowerCase(), label: newOption }]);
+        } else if (type === 'trainer') {
+            setTrainerOptions([...trainerOptions, { value: newOption.toLowerCase(), label: newOption }]);
+        }
+        setNewOption('');
         setNewColor('');
-        setOpen(false);
+        handleClose();
+    };
+
+    const handleSave = () => {
+        const data = {
+            trainingType,
+            location,
+            horse,
+            trainer,
+            selectedDate
+        };
+        onSave(data);
     };
 
     return (
         <Box
             sx={{
-                width: '100%',         // Pełna szerokość
-                padding: '20px',       // Padding
-                boxSizing: 'border-box', // Upewnij się, że padding nie wpływa na szerokość
-                display: 'flex',       // Używamy flexbox do układu
-                flexDirection: 'column', // Układ w kolumnie
-                gap: '24px'            // Odstęp między elementami
+                width: '100%',
+                padding: '20px',
+                boxSizing: 'border-box',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '24px'
             }}
         >
             <h1 style={{ textAlign: 'left' }}>Add Training</h1>
             <FormControl fullWidth variant="standard">
-                <Select
-                    labelId="training-type-label"
-                    id="training-type"
+                <TextField
+                    select
+                    id="standard-adornment-training-type"
                     value={trainingType}
-                    onChange={handleChange}
-                    startAdornment={<InputAdornment position="start">Training Type</InputAdornment>}
+                    onChange={handleChange(setTrainingType)}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">Training Type</InputAdornment>,
+                    }}
                     sx={{
-                        width: '100%' // Ustawienie szerokości Select na 100%
+                        width: '100%'
                     }}
                 >
                     {trainingOptions.map((option) => (
@@ -72,83 +111,132 @@ export default function InputAdornments() {
                             <span style={{ color: option.color }}>●</span> {option.label}
                         </MenuItem>
                     ))}
-                    <MenuItem value="" onClick={handleClickOpen}>
+                    <MenuItem value="" onClick={() => handleClickOpen('training')}>
                         <em>Add Type...</em>
                     </MenuItem>
-                </Select>
+                </TextField>
             </FormControl>
             <FormControl fullWidth variant="standard">
-                <Input
-                    id="standard-adornment-date"
-                    startAdornment={<InputAdornment position="start">Date</InputAdornment>}
-                    sx={{
-                        width: '100%' // Ustawienie szerokości Input na 100%
-                    }}
-                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateTimePicker
+                        label="Date and Time"
+                        value={selectedDate}
+                        onChange={(newValue) => setSelectedDate(newValue)}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                variant="standard"
+                                InputProps={{
+                                    startAdornment: <InputAdornment position="start">Date and Time</InputAdornment>,
+                                    sx: { width: '100%' }
+                                }}
+                                sx={{
+                                    width: '100%'
+                                }}
+                            />
+                        )}
+                    />
+                </LocalizationProvider>
             </FormControl>
             <FormControl fullWidth variant="standard">
-                <Input
-                    id="standard-adornment-time"
-                    startAdornment={<InputAdornment position="start">Time</InputAdornment>}
-                    sx={{
-                        width: '100%' // Ustawienie szerokości Input na 100%
-                    }}
-                />
-            </FormControl>
-            <FormControl fullWidth variant="standard">
-                <Input
+                <TextField
+                    select
                     id="standard-adornment-location"
-                    startAdornment={<InputAdornment position="start">Location</InputAdornment>}
-                    sx={{
-                        width: '100%' // Ustawienie szerokości Input na 100%
+                    value={location}
+                    onChange={handleChange(setLocation)}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">Location</InputAdornment>
                     }}
-                />
+                    sx={{
+                        width: '100%'
+                    }}
+                >
+                    {locationOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                    <MenuItem value="" onClick={() => handleClickOpen('location')}>
+                        <em>Add Location...</em>
+                    </MenuItem>
+                </TextField>
             </FormControl>
             <FormControl fullWidth variant="standard">
-                <Input
+                <TextField
+                    select
                     id="standard-adornment-horse"
-                    startAdornment={<InputAdornment position="start">Horse</InputAdornment>}
-                    sx={{
-                        width: '100%' // Ustawienie szerokości Input na 100%
+                    value={horse}
+                    onChange={handleChange(setHorse)}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">Horse</InputAdornment>
                     }}
-                />
+                    sx={{
+                        width: '100%'
+                    }}
+                >
+                    {horseOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                    <MenuItem value="" onClick={() => handleClickOpen('horse')}>
+                        <em>Add Horse...</em>
+                    </MenuItem>
+                </TextField>
             </FormControl>
             <FormControl fullWidth variant="standard">
-                <Input
+                <TextField
+                    select
                     id="standard-adornment-trainer"
-                    startAdornment={<InputAdornment position="start">Trainer</InputAdornment>}
-                    sx={{
-                        width: '100%' // Ustawienie szerokości Input na 100%
+                    value={trainer}
+                    onChange={handleChange(setTrainer)}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">Trainer</InputAdornment>
                     }}
-                />
+                    sx={{
+                        width: '100%'
+                    }}
+                >
+                    {trainerOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                    <MenuItem value="" onClick={() => handleClickOpen('trainer')}>
+                        <em>Add Trainer...</em>
+                    </MenuItem>
+                </TextField>
             </FormControl>
+            <Button variant="contained" color="primary" onClick={handleSave}>Save</Button>
 
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Add New Training Type</DialogTitle>
+            <Dialog open={openDialog.open} onClose={handleClose}>
+                <DialogTitle>Add New {openDialog.type.charAt(0).toUpperCase() + openDialog.type.slice(1)}</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="new-training"
-                        label="Training Type"
+                        id="new-option"
+                        label={openDialog.type.charAt(0).toUpperCase() + openDialog.type.slice(1)}
                         type="text"
                         fullWidth
-                        value={newTraining}
-                        onChange={(e) => setNewTraining(e.target.value)}
+                        value={newOption}
+                        onChange={(e) => setNewOption(e.target.value)}
                     />
-                    <TextField
-                        margin="dense"
-                        id="new-color"
-                        label="Label Color"
-                        type="text"
-                        fullWidth
-                        value={newColor}
-                        onChange={(e) => setNewColor(e.target.value)}
-                    />
+                    {openDialog.type === 'training' && (
+                        <TextField
+                            margin="dense"
+                            id="new-color"
+                            label="Label Color"
+                            type="text"
+                            fullWidth
+                            value={newColor}
+                            onChange={(e) => setNewColor(e.target.value)}
+                        />
+                    )}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleAddTraining}><b>Add</b></Button>
+                    <Button onClick={handleAddOption}><b>Add</b></Button>
                 </DialogActions>
             </Dialog>
         </Box>

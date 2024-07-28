@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
@@ -18,7 +18,7 @@ function getDayOfWeek(date) {
 }
 
 // Komponenty strony
-function Home() {
+function Home({ trainings }) {
     const today = new Date();
     const formattedDate = formatDate(today);
     const dayOfWeek = getDayOfWeek(today);
@@ -27,6 +27,22 @@ function Home() {
         <div>
             <h1 style={{ textAlign: 'left', margin: '20px' }}>Today</h1>
             <div className="date" style={{ textAlign: 'left', margin: '20px' }}>{formattedDate} • {dayOfWeek}</div>
+            {trainings.length === 0 ? (
+                <div style={{ margin: '20px' }}>No trainings scheduled for today.</div>
+            ) : (
+                <div style={{ margin: '20px' }}>
+                    <h2>Scheduled Trainings</h2>
+                    {trainings.map((training, index) => (
+                        <div key={index}>
+                            <p><strong>Training Type:</strong> {training.type}</p>
+                            <p><strong>Date:</strong> {training.date}</p>
+                            <p><strong>Horse:</strong> {training.horse}</p>
+                            <p><strong>Location:</strong> {training.location}</p>
+                            <p><strong>Trainer:</strong> {training.trainer}</p>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
@@ -45,7 +61,8 @@ function SettingsContent() {
 
 // Główna aplikacja
 function App() {
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
+    const [trainings, setTrainings] = useState([]);
     const navigate = useNavigate();
 
     React.useEffect(() => {
@@ -71,12 +88,16 @@ function App() {
         }
     }, [value, navigate]);
 
+    const handleSaveTraining = (training) => {
+        setTrainings([...trainings, training]);
+    };
+
     return (
         <div>
             <Box sx={{ paddingBottom: '56px' }}>
                 <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/task" element={<TaskApp showToolbar={true} />} /> {/* TaskApp z Toolbar */}
+                    <Route path="/" element={<Home trainings={trainings} />} />
+                    <Route path="/task" element={<TaskApp onSaveTraining={handleSaveTraining} />} />
                     <Route path="/calendar" element={<CalendarContent />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/settings" element={<SettingsContent />} />

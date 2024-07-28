@@ -1,12 +1,13 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import AddTask from './AddTask';
 import TaskList from './TaskList';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import InputAdornments from './InputAdornments'; // Import nowego komponentu
+import InputAdornments from './InputAdornments';
 
-function TaskApp({ showToolbar }) {
+function TaskApp({ showToolbar, setScheduledTrainings }) {
     const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+    const [formData, setFormData] = useState({ trainingType: '', date: null, location: '', horse: '' });
 
     function handleAddTask(text) {
         dispatch({
@@ -30,6 +31,10 @@ function TaskApp({ showToolbar }) {
         });
     }
 
+    function handleFormSubmit() {
+        setScheduledTrainings(prev => [...prev, formData]);
+    }
+
     return (
         <>
             <Box
@@ -37,7 +42,7 @@ function TaskApp({ showToolbar }) {
                     margin: '20px'
                 }}
             >
-                <InputAdornments /> {/* Nowy formularz */}
+                <InputAdornments formData={formData} setFormData={setFormData} />
             </Box>
             <h1 style={{ textAlign: 'left', margin: '20px' }}>Goal</h1>
             <AddTask onAddTask={handleAddTask} />
@@ -53,8 +58,9 @@ function TaskApp({ showToolbar }) {
                     style={{
                         backgroundColor: 'orange',
                         color: 'white',
-                        width: '100%'
+                        width: '80%'
                     }}
+                    onClick={handleFormSubmit}
                 >
                     Save
                 </Button>
