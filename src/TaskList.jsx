@@ -10,9 +10,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import Typography from '@mui/material/Typography';
+<<<<<<< HEAD
 import { Check } from 'lucide-react';
 import { Pencil } from 'lucide-react';
 import { X } from 'lucide-react';
+=======
+>>>>>>> origin/main
 
 export default function TaskList({ tasks, onChangeTask, onDeleteTask }) {
     return (
@@ -50,7 +53,11 @@ function Task({ task, onChange, onDelete }) {
                     color="primary"
                     onClick={() => setIsEditing(false)}
                 >
+<<<<<<< HEAD
                     <Check />
+=======
+                    <SaveIcon />
+>>>>>>> origin/main
                 </IconButton>
             </Box>
         );
@@ -68,7 +75,11 @@ function Task({ task, onChange, onDelete }) {
                     color="primary"
                     onClick={() => setIsEditing(true)}
                 >
+<<<<<<< HEAD
                     <Pencil />
+=======
+                    <EditIcon />
+>>>>>>> origin/main
                 </IconButton>
             </Box>
         );
@@ -91,7 +102,11 @@ function Task({ task, onChange, onDelete }) {
                 color="secondary"
                 onClick={() => onDelete(task.id)}
             >
+<<<<<<< HEAD
                 <X />
+=======
+                <DeleteIcon />
+>>>>>>> origin/main
             </IconButton>
         </Box>
     );

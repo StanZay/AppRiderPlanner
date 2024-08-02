@@ -1,7 +1,12 @@
+<<<<<<< HEAD
+=======
+/* src/index.css */
+>>>>>>> origin/main
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
+<<<<<<< HEAD
     box-sizing: border-box;
     background-color: #f0f0f0;
 }
@@ -29,4 +34,11 @@ h1 {
         font-size: 1em;
         margin: 5px;
     }
+=======
+    padding-bottom: 56px; /* Wysokość BottomNavigationAction (dostosuj w razie potrzeby) */
+}
+
+h1, .date {
+    margin: 20px;
+>>>>>>> origin/main
 }

@@ -6,6 +6,7 @@
 .task-item {
     display: flex;
     align-items: center;
+<<<<<<< HEAD
     margin-bottom: 20px;
 }
 
@@ -15,6 +16,17 @@
 
 .task-item button {
     margin-left: 20px;
+=======
+    margin-bottom: 10px;
+}
+
+.task-item input[type="text"] {
+    margin-right: 10px;
+}
+
+.task-item button {
+    margin-left: 10px;
+>>>>>>> origin/main
 }
 
 .round-checkbox {
