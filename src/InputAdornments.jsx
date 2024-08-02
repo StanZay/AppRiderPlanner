@@ -287,7 +287,7 @@ export default function InputAdornments({ onSave }) {
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
                 <Alert onClose={handleSnackbarClose} severity="success">
                     Training saved successfully!
-                </Alert>
+                </Alert>a
             </Snackbar>
         </Box>
     );

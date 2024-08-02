@@ -5,14 +5,26 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { Calendar, House, Plus } from "lucide-react";
 import TaskApp from './TaskApp';
-import InputAdornments from './InputAdornments';
 import UpcomingTraining from './UpcomingTraining';
 import CalendarContent from './CalendarContent';
+import InputAdornments from './InputAdornments';
 
+
+function formatDate(date) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
+
+function getDayOfWeek(date) {
+    const options = { weekday: 'long' };
+    return date.toLocaleDateString('en-US', options);
+}
+
+// Komponenty strony
 function Home({ trainings }) {
     const today = new Date();
-    const formattedDate = today.toLocaleDateString();
-    const dayOfWeek = today.toLocaleDateString('pl-PL', { weekday: 'long' });
+    const formattedDate = formatDate(today);
+    const dayOfWeek = getDayOfWeek(today);
 
     return (
         <div>
@@ -24,57 +36,26 @@ function Home({ trainings }) {
     );
 }
 
+// Główna aplikacja
 function App() {
     const [value, setValue] = useState(0);
-    const [trainings, setTrainings] = useState([]);
-
+    const [trainings, setTrainings] = useState([
+        {
+            trainingType: 'Dressage',
+            selectedDate: new Date(),
+            horse: 'Spirit',
+            location: 'Stable 1',
+            trainer: 'John Doe'
+        },
+        {
+            trainingType: 'Jumping',
+            selectedDate: new Date(),
+            horse: 'Lightning',
+            location: 'Stable 2',
+            trainer: 'Jane Doe'
+        }
+    ]);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        // Funkcja do ustawiania domyślnych danych w localStorage
-        const initializeLocalStorage = () => {
-            const defaultData = {
-                trainingType: '',
-                location: '',
-                horse: '',
-                trainer: '',
-                selectedDate: null,
-                selectedTime: null,
-                trainingOptions: [
-                    { value: 'dressage', label: 'Dressage', color: 'blue' },
-                    { value: 'jumping', label: 'Jumping', color: 'green' },
-                    { value: 'cross-country', label: 'Cross-Country', color: 'red' },
-                    { value: 'endurance', label: 'Endurance', color: 'purple' },
-                ],
-                locationOptions: [
-                    { value: 'arena', label: 'Arena' },
-                    { value: 'field', label: 'Field' },
-                    { value: 'trail', label: 'Trail' },
-                ],
-                horseOptions: [
-                    { value: 'black-beauty', label: 'Black Beauty' },
-                    { value: 'sea-biscuit', label: 'Sea Biscuit' },
-                ],
-                trainerOptions: [
-                    { value: 'john-duton', label: 'John Duton' },
-                    { value: 'jane-doe', label: 'Jane Doe' },
-                ],
-            };
-
-            if (!localStorage.getItem('trainingData')) {
-                localStorage.setItem('trainingData', JSON.stringify(defaultData));
-            }
-        };
-
-        initializeLocalStorage();
-
-        const storedTrainings = JSON.parse(localStorage.getItem('trainings')) || [];
-        setTrainings(storedTrainings);
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem('trainings', JSON.stringify(trainings));
-    }, [trainings]);
 
     useEffect(() => {
         switch (value) {
@@ -82,7 +63,7 @@ function App() {
                 navigate('/');
                 break;
             case 1:
-                navigate('/add-new');
+                navigate('/task');
                 break;
             case 2:
                 navigate('/calendar');
@@ -97,31 +78,12 @@ function App() {
         setTrainings([...trainings, training]);
     };
 
-    const handleAddOption = (type, option) => {
-        switch (type) {
-            case 'training':
-                setTrainings((prev) => [...prev, option]);
-                break;
-            case 'location':
-                // Handle location option
-                break;
-            case 'horse':
-                // Handle horse option
-                break;
-            case 'trainer':
-                // Handle trainer option
-                break;
-            default:
-                break;
-        }
-    };
-
     return (
         <div>
             <Box sx={{ paddingBottom: '56px' }}>
                 <Routes>
                     <Route path="/" element={<Home trainings={trainings} />} />
-                    <Route path="/add-new" element={<InputAdornments onSave={handleSaveTraining} onAddOption={handleAddOption} />} />
+                    <Route path="/task" element={<InputAdornments onSave={handleSaveTraining} />} /> {/* Dodano InputAdornments w zakładce Add Task */}
                     <Route path="/calendar" element={<CalendarContent />} />
                 </Routes>
             </Box>
@@ -136,7 +98,9 @@ function App() {
             }}>
                 <BottomNavigation
                     value={value}
-                    onChange={(event, newValue) => setValue(newValue)}
+                    onChange={(event, newValue) => {
+                        setValue(newValue);
+                    }}
                     sx={{ width: '100%' }}
                 >
                     <BottomNavigationAction
@@ -144,21 +108,21 @@ function App() {
                         icon={<House />}
                         component={NavLink}
                         to="/"
-                        value={0}
+                        showLabel={value === 0}
                     />
                     <BottomNavigationAction
                         label="Add New"
                         icon={<Plus />}
                         component={NavLink}
-                        to="/add-new"
-                        value={1}
+                        to="/task"
+                        showLabel={value === 1}
                     />
                     <BottomNavigationAction
                         label="Calendar"
                         icon={<Calendar />}
                         component={NavLink}
                         to="/calendar"
-                        value={2}
+                        showLabel={value === 2}
                     />
                 </BottomNavigation>
             </Box>

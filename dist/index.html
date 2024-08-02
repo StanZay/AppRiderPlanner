@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Rider Planner - A modern application for managing horse riding sessions and training schedules." />
+  <meta name="keywords" content="horse riding, training schedule, rider planner, equestrian" />
+  <meta name="author" content="StanZay_" />
+  <title>Rider Planner - projekt CodersLab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --background-color: #f0f0f0;
+      --text-color: #333;
+      --heading-font-size: 2em;
+      --date-font-size: 1.2em;
+      --heading-margin: 20px;
+      --date-margin: 10px;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: var(--background-color);
+    }
+
+    header, main, footer {
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-size: var(--heading-font-size);
+      margin: var(--heading-margin);
+      text-align: center;
+      color: var(--text-color);
+    }
+
+    .date {
+      font-size: var(--date-font-size);
+      color: var(--text-color);
+      margin: var(--date-margin);
+      text-align: center;
+    }
+
+
+    @media (max-width: 600px) {
+      :root {
+        --heading-font-size: 1.5em;
+        --heading-margin: 15px;
+        --date-font-size: 1em;
+        --date-margin: 5px;
+      }
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/index-C_aWDHsE.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-C1udWsTy.css">
+</head>
+<body>
+<header>
+  <div class="date" id="current-date"></div>
+</header>
+<main>
+  <div id="root"></div>
+</main>
+</body>
+</html>

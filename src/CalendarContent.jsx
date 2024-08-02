@@ -14,7 +14,7 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import dayjs from 'dayjs';
 import InputAdornments from './InputAdornments';
 import { Plus, TrendingUp } from 'lucide-react';
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import { styled } from '@mui/material/styles';
 
 const trainingTypes = {
@@ -127,19 +127,25 @@ function CalendarContent() {
                                 />
                                 <YAxis />
                                 <Tooltip />
-                                <Legend />
-                                <Bar
-                                    dataKey="value"
-                                    radius={[10, 10, 0, 0]}
-                                    background={{ fill: '#eee' }}
-                                >
+                                <Legend
+                                    formatter={(value, entry) => (
+                                        <Box component="span" sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Box
+                                                sx={{
+                                                    width: '10px',
+                                                    height: '10px',
+                                                    borderRadius: '50%',
+                                                    backgroundColor: entry.color,
+                                                    marginRight: '8px'
+                                                }}
+                                            />
+                                            <Typography variant="body2">{value}</Typography>
+                                        </Box>
+                                    )}
+                                />
+                                <Bar dataKey="value" radius={[10, 10, 0, 0]} background={{ fill: '#eee' }}>
                                     {chartData.map((entry, index) => (
-                                        <Bar
-                                            key={`bar-${index}`}
-                                            dataKey="value"
-                                            fill={entry.color}
-                                            radius={[10, 10, 0, 0]}
-                                        />
+                                        <Cell key={`cell-${index}`} fill={entry.color} />
                                     ))}
                                 </Bar>
                             </BarChart>

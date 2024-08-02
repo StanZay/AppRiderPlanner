@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import {AlarmClock, Calendar, LucideMagnet, MapPin, User} from "lucide-react";
+import { AlarmClock, Calendar, LucideMagnet, MapPin, User } from "lucide-react";
 
 const TrainingBox = ({ training, color }) => {
     const formatDate = (date) => {
@@ -47,7 +47,7 @@ const TrainingBox = ({ training, color }) => {
 const UpcomingTraining = ({ trainings }) => {
     return (
         <Box sx={{ margin: '20px', marginBottom: '40px' }}>
-            <Typography variant="h5" sx={{ textAlign: 'left', marginBottom: '20px' }}>Upcoming training</Typography>
+            <Typography variant="h5" sx={{ textAlign: 'left', marginBottom: '20px' }}>Upcoming Training</Typography>
             {trainings.length === 0 ? (
                 <div style={{ margin: '20px' }}>No trainings scheduled for today.</div>
             ) : (
@@ -55,7 +55,7 @@ const UpcomingTraining = ({ trainings }) => {
                     <TrainingBox
                         key={index}
                         training={training}
-                        color={index === 0 ? '#8F0758' : '#8C2D26'}
+                        color={index === 0 ? '#8F0758' : '#8C2D26'} // Kolory zgodne z legendą
                     />
                 ))
             )}

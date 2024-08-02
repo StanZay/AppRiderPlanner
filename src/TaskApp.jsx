@@ -1,13 +1,10 @@
 import React, { useReducer, useState } from 'react';
 import AddTask from './AddTask';
 import TaskList from './TaskList';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import InputAdornments from './InputAdornments';
 
-function TaskApp({ showToolbar, onSaveTraining }) {
+function TaskApp({ showToolbar }) {
     const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
-    const [formData, setFormData] = useState({ trainingType: '', selectedDate: null, location: '', horse: '', trainer: '' });
 
     function handleAddTask(text) {
         dispatch({
@@ -31,21 +28,9 @@ function TaskApp({ showToolbar, onSaveTraining }) {
         });
     }
 
-    function handleFormSubmit() {
-        onSaveTraining(formData);
-        setFormData({ trainingType: '', selectedDate: null, location: '', horse: '', trainer: '' }); // Reset form
-    }
-
     return (
         <>
-            <Box
-                sx={{
-                    margin: '20px'
-                }}
-            >
-                <InputAdornments formData={formData} setFormData={setFormData} onSave={handleFormSubmit} />
-            </Box>
-            <h1 style={{ textAlign: 'left', margin: '0px' }}>Goal</h1>
+            <h1 style={{ textAlign: 'left', margin: '40px' }}>Goal</h1>
             <AddTask onAddTask={handleAddTask} />
             <TaskList
                 tasks={tasks}
