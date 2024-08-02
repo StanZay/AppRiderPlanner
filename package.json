@@ -3,11 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://stanzay.github.io/AppRiderPlanner",  // Dodany wpis
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "vite build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "^11.13.0",
@@ -17,7 +20,7 @@
     "@mui/material": "^5.16.5",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@mui/x-charts": "^7.11.1",
-    "@mui/x-date-pickers": "^7.11.1",
+    "@mui/x-date-pickers": "^7.12.0",
     "@supabase/supabase-js": "^2.44.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -25,10 +28,13 @@
     "dayjs": "^1.11.12",
     "lucide": "^0.411.0",
     "lucide-react": "^0.408.0",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.8.0",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.25.1",
+    "react-split": "^2.0.14",
     "recharts": "^2.12.7",
     "source-map-js": "^1.2.0",
     "styled-components": "^6.1.12",
@@ -44,6 +50,7 @@
     "eslint-plugin-react": "^7.34.3",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
+    "gh-pages": "^6.1.1",
     "postcss": "^8.4.40",
     "tailwindcss": "^3.4.7",
     "vite": "^5.3.4"

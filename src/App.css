@@ -1,55 +1,43 @@
+/* Resetowanie stylów  */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
-  bottom: 0;
+  background-color: #f0f0f0;
   padding-bottom: 56px;
-  position: fixed;
 }
 
-h1, .date {
-  margin: 20px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: sans-serif;
-  margin: 20px;
-  padding: 0;
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
 }
 
 h1 {
-  margin-top: 0;
-  font-size: 22px;
+  font-size: 2em;
+  margin: 20px;
 }
 
 h2 {
-  margin-top: 0;
-  font-size: 20px;
+  font-size: 1.5em;
 }
 
 h3 {
-  margin-top: 0;
-  font-size: 18px;
+  font-size: 1.17em;
 }
 
 h4 {
-  margin-top: 0;
-  font-size: 16px;
+  font-size: 1em;
 }
 
 h5 {
-  margin-top: 0;
-  font-size: 14px;
+  font-size: 0.83em;
 }
 
 h6 {
-  margin-top: 0;
-  font-size: 12px;
+  font-size: 0.67em;
 }
 
 code {
@@ -58,61 +46,13 @@ code {
 
 ul {
   padding-inline-start: 20px;
+  margin: 0;
 }
 
-button { margin: 5px; }
-li { list-style-type: none; }
-ul, li { margin: 0; padding: 0; }
-
-* {
-  box-sizing: border-box;
+li {
+  list-style-type: none;
 }
 
-body {
-  font-family: sans-serif;
-  margin: 20px;
-  padding: 0;
+button {
+  margin: 5px;
 }
-
-h1 {
-  margin-top: 0;
-  font-size: 22px;
-}
-
-h2 {
-  margin-top: 0;
-  font-size: 20px;
-}
-
-h3 {
-  margin-top: 0;
-  font-size: 18px;
-}
-
-h4 {
-  margin-top: 0;
-  font-size: 16px;
-}
-
-h5 {
-  margin-top: 0;
-  font-size: 14px;
-}
-
-h6 {
-  margin-top: 0;
-  font-size: 12px;
-}
-
-code {
-  font-size: 1.2em;
-}
-
-ul {
-  padding-inline-start: 20px;
-}
-
-button { margin: 5px; }
-li { list-style-type: none; }
-ul, li { margin: 0; padding: 0; }
-

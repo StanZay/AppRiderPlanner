@@ -45,7 +45,7 @@ function TaskApp({ showToolbar, onSaveTraining }) {
             >
                 <InputAdornments formData={formData} setFormData={setFormData} onSave={handleFormSubmit} />
             </Box>
-            <h1 style={{ textAlign: 'left', margin: '40px' }}>Goal</h1>
+            <h1 style={{ textAlign: 'left', margin: '0px' }}>Goal</h1>
             <AddTask onAddTask={handleAddTask} />
             <TaskList
                 tasks={tasks}

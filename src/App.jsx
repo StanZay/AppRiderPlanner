@@ -1,84 +1,91 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import { Calendar, CircleUserRound, House, Plus, Settings } from "lucide-react";
+import { Calendar, House, Plus } from "lucide-react";
 import TaskApp from './TaskApp';
+import InputAdornments from './InputAdornments';
 import UpcomingTraining from './UpcomingTraining';
-import CalendarContent from './CalendarContent'; // Import CalendarContent
+import CalendarContent from './CalendarContent';
 
-// Funkcje pomocnicze
-function formatDate(date) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
-}
-
-function getDayOfWeek(date) {
-    const options = { weekday: 'long' };
-    return date.toLocaleDateString('en-US', options);
-}
-
-// Komponenty strony
 function Home({ trainings }) {
     const today = new Date();
-    const formattedDate = formatDate(today);
-    const dayOfWeek = getDayOfWeek(today);
+    const formattedDate = today.toLocaleDateString();
+    const dayOfWeek = today.toLocaleDateString('pl-PL', { weekday: 'long' });
 
     return (
         <div>
             <h1 style={{ textAlign: 'left', margin: '20px' }}>Today</h1>
             <div className="date" style={{ textAlign: 'left', margin: '20px' }}>{formattedDate} • {dayOfWeek}</div>
             <UpcomingTraining trainings={trainings} />
+            <TaskApp showToolbar={false} />
         </div>
     );
 }
 
-function Profile() {
-    return <div>Profile Content</div>;
-}
-
-function SettingsContent() {
-    return <div>Settings Content</div>;
-}
-
-// Główna aplikacja
 function App() {
     const [value, setValue] = useState(0);
-    const [trainings, setTrainings] = useState([
-        {
-            trainingType: 'Dressage',
-            selectedDate: new Date(),
-            horse: 'Spirit',
-            location: 'Stable 1',
-            trainer: 'John Doe'
-        },
-        {
-            trainingType: 'Jumping',
-            selectedDate: new Date(),
-            horse: 'Lightning',
-            location: 'Stable 2',
-            trainer: 'Jane Doe'
-        }
-    ]);
+    const [trainings, setTrainings] = useState([]);
+
     const navigate = useNavigate();
 
-    React.useEffect(() => {
+    useEffect(() => {
+        // Funkcja do ustawiania domyślnych danych w localStorage
+        const initializeLocalStorage = () => {
+            const defaultData = {
+                trainingType: '',
+                location: '',
+                horse: '',
+                trainer: '',
+                selectedDate: null,
+                selectedTime: null,
+                trainingOptions: [
+                    { value: 'dressage', label: 'Dressage', color: 'blue' },
+                    { value: 'jumping', label: 'Jumping', color: 'green' },
+                    { value: 'cross-country', label: 'Cross-Country', color: 'red' },
+                    { value: 'endurance', label: 'Endurance', color: 'purple' },
+                ],
+                locationOptions: [
+                    { value: 'arena', label: 'Arena' },
+                    { value: 'field', label: 'Field' },
+                    { value: 'trail', label: 'Trail' },
+                ],
+                horseOptions: [
+                    { value: 'black-beauty', label: 'Black Beauty' },
+                    { value: 'sea-biscuit', label: 'Sea Biscuit' },
+                ],
+                trainerOptions: [
+                    { value: 'john-duton', label: 'John Duton' },
+                    { value: 'jane-doe', label: 'Jane Doe' },
+                ],
+            };
+
+            if (!localStorage.getItem('trainingData')) {
+                localStorage.setItem('trainingData', JSON.stringify(defaultData));
+            }
+        };
+
+        initializeLocalStorage();
+
+        const storedTrainings = JSON.parse(localStorage.getItem('trainings')) || [];
+        setTrainings(storedTrainings);
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('trainings', JSON.stringify(trainings));
+    }, [trainings]);
+
+    useEffect(() => {
         switch (value) {
             case 0:
                 navigate('/');
                 break;
             case 1:
-                navigate('/task');
+                navigate('/add-new');
                 break;
             case 2:
                 navigate('/calendar');
-                break;
-            case 3:
-                navigate('/profile');
-                break;
-            case 4:
-                navigate('/settings');
                 break;
             default:
                 navigate('/');
@@ -90,15 +97,32 @@ function App() {
         setTrainings([...trainings, training]);
     };
 
+    const handleAddOption = (type, option) => {
+        switch (type) {
+            case 'training':
+                setTrainings((prev) => [...prev, option]);
+                break;
+            case 'location':
+                // Handle location option
+                break;
+            case 'horse':
+                // Handle horse option
+                break;
+            case 'trainer':
+                // Handle trainer option
+                break;
+            default:
+                break;
+        }
+    };
+
     return (
         <div>
             <Box sx={{ paddingBottom: '56px' }}>
                 <Routes>
                     <Route path="/" element={<Home trainings={trainings} />} />
-                    <Route path="/task" element={<TaskApp onSaveTraining={handleSaveTraining} />} />
-                    <Route path="/calendar" element={<CalendarContent />} /> {/* Use CalendarContent */}
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/settings" element={<SettingsContent />} />
+                    <Route path="/add-new" element={<InputAdornments onSave={handleSaveTraining} onAddOption={handleAddOption} />} />
+                    <Route path="/calendar" element={<CalendarContent />} />
                 </Routes>
             </Box>
             <Box sx={{
@@ -112,9 +136,7 @@ function App() {
             }}>
                 <BottomNavigation
                     value={value}
-                    onChange={(event, newValue) => {
-                        setValue(newValue);
-                    }}
+                    onChange={(event, newValue) => setValue(newValue)}
                     sx={{ width: '100%' }}
                 >
                     <BottomNavigationAction
@@ -122,35 +144,21 @@ function App() {
                         icon={<House />}
                         component={NavLink}
                         to="/"
-                        showLabel={value === 0}
+                        value={0}
                     />
                     <BottomNavigationAction
                         label="Add New"
                         icon={<Plus />}
                         component={NavLink}
-                        to="/task"
-                        showLabel={value === 1}
+                        to="/add-new"
+                        value={1}
                     />
                     <BottomNavigationAction
                         label="Calendar"
                         icon={<Calendar />}
                         component={NavLink}
                         to="/calendar"
-                        showLabel={value === 2}
-                    />
-                    <BottomNavigationAction
-                        label="Profile"
-                        icon={<CircleUserRound />}
-                        component={NavLink}
-                        to="/profile"
-                        showLabel={value === 3}
-                    />
-                    <BottomNavigationAction
-                        label="Settings"
-                        icon={<Settings />}
-                        component={NavLink}
-                        to="/settings"
-                        showLabel={value === 4}
+                        value={2}
                     />
                 </BottomNavigation>
             </Box>

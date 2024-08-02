@@ -12,8 +12,8 @@ import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -47,6 +47,7 @@ export default function InputAdornments({ onSave }) {
     const [newOption, setNewOption] = React.useState('');
     const [newColor, setNewColor] = React.useState('');
     const [selectedDate, setSelectedDate] = React.useState(null);
+    const [selectedTime, setSelectedTime] = React.useState(null);
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
     const handleChange = (setter) => (event) => {
@@ -64,13 +65,25 @@ export default function InputAdornments({ onSave }) {
     const handleAddOption = () => {
         const { type } = openDialog;
         if (type === 'training') {
-            setTrainingOptions([...trainingOptions, { value: newOption.toLowerCase(), label: newOption, color: newColor }]);
+            setTrainingOptions([
+                ...trainingOptions,
+                { value: newOption.toLowerCase(), label: newOption, color: newColor }
+            ]);
         } else if (type === 'location') {
-            setLocationOptions([...locationOptions, { value: newOption.toLowerCase(), label: newOption }]);
+            setLocationOptions([
+                ...locationOptions,
+                { value: newOption.toLowerCase(), label: newOption }
+            ]);
         } else if (type === 'horse') {
-            setHorseOptions([...horseOptions, { value: newOption.toLowerCase(), label: newOption }]);
+            setHorseOptions([
+                ...horseOptions,
+                { value: newOption.toLowerCase(), label: newOption }
+            ]);
         } else if (type === 'trainer') {
-            setTrainerOptions([...trainerOptions, { value: newOption.toLowerCase(), label: newOption }]);
+            setTrainerOptions([
+                ...trainerOptions,
+                { value: newOption.toLowerCase(), label: newOption }
+            ]);
         }
         setNewOption('');
         setNewColor('');
@@ -78,13 +91,22 @@ export default function InputAdornments({ onSave }) {
     };
 
     const handleSave = () => {
+        if (!selectedDate || !selectedTime) {
+            setSnackbarOpen(true);
+            return;
+        }
+
         const data = {
             trainingType,
             location,
             horse,
             trainer,
-            selectedDate
+            selectedDateTime: dayjs(selectedDate)
+                .set('hour', selectedTime?.hour() || 0)
+                .set('minute', selectedTime?.minute() || 0)
+                .toISOString() // Upewnij się, że data jest w poprawnym formacie
         };
+
         onSave(data);
         setSnackbarOpen(true); // Otwórz Snackbar po zapisaniu
     };
@@ -105,6 +127,7 @@ export default function InputAdornments({ onSave }) {
             }}
         >
             <h1 style={{ textAlign: 'left' }}>Add Training</h1>
+
             <FormControl fullWidth variant="standard">
                 <TextField
                     select
@@ -112,11 +135,9 @@ export default function InputAdornments({ onSave }) {
                     value={trainingType}
                     onChange={handleChange(setTrainingType)}
                     InputProps={{
-                        startAdornment: <InputAdornment position="start">Training Type</InputAdornment>,
+                        startAdornment: <InputAdornment position="start">Training Type</InputAdornment>
                     }}
-                    sx={{
-                        width: '100%'
-                    }}
+                    sx={{ width: '100%' }}
                 >
                     {trainingOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -128,10 +149,10 @@ export default function InputAdornments({ onSave }) {
                     </MenuItem>
                 </TextField>
             </FormControl>
+
             <FormControl fullWidth variant="standard">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
-                        label="Date and Time"
+                    <DatePicker
                         value={selectedDate}
                         onChange={(newValue) => setSelectedDate(newValue)}
                         renderInput={(params) => (
@@ -139,17 +160,29 @@ export default function InputAdornments({ onSave }) {
                                 {...params}
                                 variant="standard"
                                 InputProps={{
-                                    startAdornment: <InputAdornment position="start">Date and Time</InputAdornment>,
-                                    sx: { width: '100%' }
+                                    startAdornment: <InputAdornment position="start">Date</InputAdornment>
                                 }}
-                                sx={{
-                                    width: '100%'
+                                sx={{ width: '100%', mb: 2 }} // Margines dolny dla oddzielenia od TimePicker
+                            />
+                        )}
+                    />
+                    <TimePicker
+                        value={selectedTime}
+                        onChange={(newValue) => setSelectedTime(newValue)}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                variant="standard"
+                                InputProps={{
+                                    startAdornment: <InputAdornment position="start">Time</InputAdornment>
                                 }}
+                                sx={{ width: '100%' }}
                             />
                         )}
                     />
                 </LocalizationProvider>
             </FormControl>
+
             <FormControl fullWidth variant="standard">
                 <TextField
                     select
@@ -159,9 +192,7 @@ export default function InputAdornments({ onSave }) {
                     InputProps={{
                         startAdornment: <InputAdornment position="start">Location</InputAdornment>
                     }}
-                    sx={{
-                        width: '100%'
-                    }}
+                    sx={{ width: '100%' }}
                 >
                     {locationOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -173,6 +204,7 @@ export default function InputAdornments({ onSave }) {
                     </MenuItem>
                 </TextField>
             </FormControl>
+
             <FormControl fullWidth variant="standard">
                 <TextField
                     select
@@ -182,9 +214,7 @@ export default function InputAdornments({ onSave }) {
                     InputProps={{
                         startAdornment: <InputAdornment position="start">Horse</InputAdornment>
                     }}
-                    sx={{
-                        width: '100%'
-                    }}
+                    sx={{ width: '100%' }}
                 >
                     {horseOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -196,6 +226,7 @@ export default function InputAdornments({ onSave }) {
                     </MenuItem>
                 </TextField>
             </FormControl>
+
             <FormControl fullWidth variant="standard">
                 <TextField
                     select
@@ -205,9 +236,7 @@ export default function InputAdornments({ onSave }) {
                     InputProps={{
                         startAdornment: <InputAdornment position="start">Trainer</InputAdornment>
                     }}
-                    sx={{
-                        width: '100%'
-                    }}
+                    sx={{ width: '100%' }}
                 >
                     {trainerOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -219,48 +248,47 @@ export default function InputAdornments({ onSave }) {
                     </MenuItem>
                 </TextField>
             </FormControl>
-            <Button variant="contained" color="primary" onClick={handleSave}>Save</Button>
 
-            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-                <Alert onClose={handleSnackbarClose} severity="success">
-                    Boom! Training saved!
-                </Alert>
-            </Snackbar>
+            <Button variant="contained" color="primary" onClick={handleSave}>
+                Save Training
+            </Button>
 
             <Dialog open={openDialog.open} onClose={handleClose}>
-                <DialogTitle>Add New {openDialog.type.charAt(0).toUpperCase() + openDialog.type.slice(1)}</DialogTitle>
+                <DialogTitle>Add {openDialog.type}</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="new-option"
-                        label={openDialog.type.charAt(0).toUpperCase() + openDialog.type.slice(1)}
+                        label={`New ${openDialog.type}`}
                         type="text"
                         fullWidth
+                        variant="standard"
                         value={newOption}
                         onChange={(e) => setNewOption(e.target.value)}
                     />
                     {openDialog.type === 'training' && (
                         <TextField
                             margin="dense"
-                            id="new-color"
                             label="Color"
                             type="text"
                             fullWidth
+                            variant="standard"
                             value={newColor}
                             onChange={(e) => setNewColor(e.target.value)}
                         />
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleAddOption} color="primary">
-                        Add
-                    </Button>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleAddOption}>Add</Button>
                 </DialogActions>
             </Dialog>
+
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity="success">
+                    Training saved successfully!
+                </Alert>
+            </Snackbar>
         </Box>
     );
 }
