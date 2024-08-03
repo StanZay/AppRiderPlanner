@@ -26,9 +26,21 @@ function AddTask({ onAddTask }) {
                 border: '1px solid #ccc',
                 borderRadius: '8px',
                 boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
+<<<<<<< HEAD
+<<<<<<< HEAD
                 width: '80%',
                 maxWidth: '600px',
                 margin: '20px'
+=======
+                width: '100%',
+                maxWidth: '600px',
+                margin: 'auto'
+>>>>>>> origin/main
+=======
+                width: '80%',
+                maxWidth: '600px',
+                margin: '20px'
+>>>>>>> c4a16a519 (Initial commit)
             }}
         >
             <TextField

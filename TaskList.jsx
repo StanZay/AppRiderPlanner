@@ -10,9 +10,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import Typography from '@mui/material/Typography';
+<<<<<<< HEAD
+<<<<<<< HEAD
 import { Check } from 'lucide-react';
 import { Pencil } from 'lucide-react';
 import { X } from 'lucide-react';
+=======
+>>>>>>> origin/main
+=======
+import { Check } from 'lucide-react';
+import { Pencil } from 'lucide-react';
+import { X } from 'lucide-react';
+>>>>>>> c4a16a519 (Initial commit)
 
 export default function TaskList({ tasks, onChangeTask, onDeleteTask }) {
     return (
@@ -50,7 +59,15 @@ function Task({ task, onChange, onDelete }) {
                     color="primary"
                     onClick={() => setIsEditing(false)}
                 >
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <Check />
+=======
+                    <SaveIcon />
+>>>>>>> origin/main
+=======
+                    <Check />
+>>>>>>> c4a16a519 (Initial commit)
                 </IconButton>
             </Box>
         );
@@ -68,7 +85,15 @@ function Task({ task, onChange, onDelete }) {
                     color="primary"
                     onClick={() => setIsEditing(true)}
                 >
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <Pencil />
+=======
+                    <EditIcon />
+>>>>>>> origin/main
+=======
+                    <Pencil />
+>>>>>>> c4a16a519 (Initial commit)
                 </IconButton>
             </Box>
         );
@@ -91,7 +116,15 @@ function Task({ task, onChange, onDelete }) {
                 color="secondary"
                 onClick={() => onDelete(task.id)}
             >
+<<<<<<< HEAD
+<<<<<<< HEAD
                 <X />
+=======
+                <DeleteIcon />
+>>>>>>> origin/main
+=======
+                <X />
+>>>>>>> c4a16a519 (Initial commit)
             </IconButton>
         </Box>
     );

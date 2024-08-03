@@ -1,10 +1,53 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+/* src/index.css */
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    padding-bottom: 56px;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c4a16a519 (Initial commit)
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    margin: 20px;
+    font-size: 2em;
+    text-align: center;
+}
+
+.date {
+    margin: 10px 20px;
+    font-size: 1.2em;
+    color: #333;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5em;
+        margin: 15px;
+    }
+
+    .date {
+        font-size: 1em;
+        margin: 5px;
+    }
+<<<<<<< HEAD
+=======
+    padding-bottom: 56px; /* Wysokość BottomNavigationAction (dostosuj w razie potrzeby) */
 }
 
 h1, .date {
     margin: 20px;
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
 }

@@ -1,3 +1,49 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c4a16a519 (Initial commit)
+/* Resetowanie stylów  */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f0f0f0;
+  padding-bottom: 56px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 20px;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+h3 {
+  font-size: 1.17em;
+}
+
+h4 {
+  font-size: 1em;
+}
+
+h5 {
+  font-size: 0.83em;
+}
+
+h6 {
+  font-size: 0.67em;
+<<<<<<< HEAD
+=======
 
 body {
   font-family: 'Roboto', sans-serif;
@@ -50,6 +96,9 @@ h5 {
 h6 {
   margin-top: 0;
   font-size: 12px;
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
 }
 
 code {
@@ -58,6 +107,22 @@ code {
 
 ul {
   padding-inline-start: 20px;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c4a16a519 (Initial commit)
+  margin: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+button {
+  margin: 5px;
+}
+<<<<<<< HEAD
+=======
 }
 
 button { margin: 5px; }
@@ -116,3 +181,6 @@ button { margin: 5px; }
 li { list-style-type: none; }
 ul, li { margin: 0; padding: 0; }
 
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)

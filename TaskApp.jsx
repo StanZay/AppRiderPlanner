@@ -1,13 +1,28 @@
 import React, { useReducer, useState } from 'react';
 import AddTask from './AddTask';
 import TaskList from './TaskList';
+<<<<<<< HEAD
+<<<<<<< HEAD
+import Box from '@mui/material/Box';
+
+function TaskApp({ showToolbar }) {
+    const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+=======
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import InputAdornments from './InputAdornments';
 
+function TaskApp({ showToolbar, setScheduledTrainings }) {
+    const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+    const [formData, setFormData] = useState({ trainingType: '', date: null, location: '', horse: '' });
+>>>>>>> origin/main
+=======
+import Box from '@mui/material/Box';
+
 function TaskApp({ showToolbar, onSaveTraining }) {
     const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
     const [formData, setFormData] = useState({ trainingType: '', selectedDate: null, location: '', horse: '', trainer: '' });
+>>>>>>> c4a16a519 (Initial commit)
 
     function handleAddTask(text) {
         dispatch({
@@ -31,9 +46,19 @@ function TaskApp({ showToolbar, onSaveTraining }) {
         });
     }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+    return (
+        <>
+            <h1 style={{ textAlign: 'left', margin: '40px' }}>Goal</h1>
+=======
+    function handleFormSubmit() {
+        setScheduledTrainings(prev => [...prev, formData]);
+=======
     function handleFormSubmit() {
         onSaveTraining(formData);
         setFormData({ trainingType: '', selectedDate: null, location: '', horse: '', trainer: '' }); // Reset form
+>>>>>>> c4a16a519 (Initial commit)
     }
 
     return (
@@ -43,15 +68,42 @@ function TaskApp({ showToolbar, onSaveTraining }) {
                     margin: '20px'
                 }}
             >
-                <InputAdornments formData={formData} setFormData={setFormData} onSave={handleFormSubmit} />
+<<<<<<< HEAD
+                <InputAdornments formData={formData} setFormData={setFormData} />
+            </Box>
+            <h1 style={{ textAlign: 'left', margin: '20px' }}>Goal</h1>
+>>>>>>> origin/main
+=======
+                {/* Usunięto InputAdornments */}
             </Box>
             <h1 style={{ textAlign: 'left', margin: '40px' }}>Goal</h1>
+>>>>>>> c4a16a519 (Initial commit)
             <AddTask onAddTask={handleAddTask} />
             <TaskList
                 tasks={tasks}
                 onChangeTask={handleChangeTask}
                 onDeleteTask={handleDeleteTask}
             />
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            <div style={{ display: 'flex', justifyContent: 'center', margin: '20px' }}>
+                <Button
+                    variant="contained"
+                    disableElevation
+                    style={{
+                        backgroundColor: 'orange',
+                        color: 'white',
+                        width: '80%'
+                    }}
+                    onClick={handleFormSubmit}
+                >
+                    Save
+                </Button>
+            </div>
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
         </>
     );
 }
@@ -90,4 +142,12 @@ const initialTasks = [
     { id: 2, text: 'Advanced lunging techniques', done: false }
 ];
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 export default TaskApp;
+=======
+export default TaskApp;
+>>>>>>> origin/main
+=======
+export default TaskApp;
+>>>>>>> c4a16a519 (Initial commit)

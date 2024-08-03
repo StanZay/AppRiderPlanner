@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// InputAdornments.jsx
+>>>>>>> c4a16a519 (Initial commit)
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -9,15 +13,33 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
+<<<<<<< HEAD
+<<<<<<< HEAD
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+=======
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+>>>>>>> c4a16a519 (Initial commit)
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+<<<<<<< HEAD
+=======
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
 
 export default function InputAdornments({ onSave }) {
     const [trainingType, setTrainingType] = React.useState('');
@@ -47,7 +69,16 @@ export default function InputAdornments({ onSave }) {
     const [newOption, setNewOption] = React.useState('');
     const [newColor, setNewColor] = React.useState('');
     const [selectedDate, setSelectedDate] = React.useState(null);
+<<<<<<< HEAD
+<<<<<<< HEAD
+    const [selectedTime, setSelectedTime] = React.useState(null);
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+=======
+>>>>>>> origin/main
+=======
+    const [selectedTime, setSelectedTime] = React.useState(null);
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+>>>>>>> c4a16a519 (Initial commit)
 
     const handleChange = (setter) => (event) => {
         setter(event.target.value);
@@ -64,6 +95,30 @@ export default function InputAdornments({ onSave }) {
     const handleAddOption = () => {
         const { type } = openDialog;
         if (type === 'training') {
+<<<<<<< HEAD
+<<<<<<< HEAD
+            setTrainingOptions([
+                ...trainingOptions,
+                { value: newOption.toLowerCase(), label: newOption, color: newColor }
+            ]);
+        } else if (type === 'location') {
+            setLocationOptions([
+                ...locationOptions,
+                { value: newOption.toLowerCase(), label: newOption }
+            ]);
+        } else if (type === 'horse') {
+            setHorseOptions([
+                ...horseOptions,
+                { value: newOption.toLowerCase(), label: newOption }
+            ]);
+        } else if (type === 'trainer') {
+            setTrainerOptions([
+                ...trainerOptions,
+                { value: newOption.toLowerCase(), label: newOption }
+            ]);
+=======
+=======
+>>>>>>> c4a16a519 (Initial commit)
             setTrainingOptions([...trainingOptions, { value: newOption.toLowerCase(), label: newOption, color: newColor }]);
         } else if (type === 'location') {
             setLocationOptions([...locationOptions, { value: newOption.toLowerCase(), label: newOption }]);
@@ -71,6 +126,10 @@ export default function InputAdornments({ onSave }) {
             setHorseOptions([...horseOptions, { value: newOption.toLowerCase(), label: newOption }]);
         } else if (type === 'trainer') {
             setTrainerOptions([...trainerOptions, { value: newOption.toLowerCase(), label: newOption }]);
+<<<<<<< HEAD
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
         }
         setNewOption('');
         setNewColor('');
@@ -78,26 +137,72 @@ export default function InputAdornments({ onSave }) {
     };
 
     const handleSave = () => {
+<<<<<<< HEAD
+<<<<<<< HEAD
+        if (!selectedDate || !selectedTime) {
+            setSnackbarOpen(true);
+            return;
+        }
+
+=======
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
         const data = {
             trainingType,
             location,
             horse,
             trainer,
-            selectedDate
+<<<<<<< HEAD
+<<<<<<< HEAD
+            selectedDateTime: dayjs(selectedDate)
+                .set('hour', selectedTime?.hour() || 0)
+                .set('minute', selectedTime?.minute() || 0)
+                .toISOString() // Upewnij się, że data jest w poprawnym formacie
         };
+
         onSave(data);
         setSnackbarOpen(true); // Otwórz Snackbar po zapisaniu
+=======
+            selectedDate,
+            selectedTime
+        };
+
+        // Save to localStorage
+        let savedTrainings = JSON.parse(localStorage.getItem('trainings')) || [];
+        savedTrainings.push(data);
+        localStorage.setItem('trainings', JSON.stringify(savedTrainings));
+
+        onSave(data); // Update parent component
+        setSnackbarOpen(true); // Open Snackbar after saving
+>>>>>>> c4a16a519 (Initial commit)
     };
 
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
+<<<<<<< HEAD
+=======
+            selectedDate
+        };
+        onSave(data);
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
     };
 
     return (
         <Box
             sx={{
                 width: '100%',
+<<<<<<< HEAD
+<<<<<<< HEAD
                 padding: '00px',
+=======
+                padding: '20px',
+>>>>>>> origin/main
+=======
+                padding: '00px',
+>>>>>>> c4a16a519 (Initial commit)
                 boxSizing: 'border-box',
                 display: 'flex',
                 flexDirection: 'column',
@@ -105,6 +210,13 @@ export default function InputAdornments({ onSave }) {
             }}
         >
             <h1 style={{ textAlign: 'left' }}>Add Training</h1>
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
             <FormControl fullWidth variant="standard">
                 <TextField
                     select
@@ -112,11 +224,23 @@ export default function InputAdornments({ onSave }) {
                     value={trainingType}
                     onChange={handleChange(setTrainingType)}
                     InputProps={{
+<<<<<<< HEAD
+<<<<<<< HEAD
+                        startAdornment: <InputAdornment position="start">Training Type</InputAdornment>
+                    }}
+                    sx={{ width: '100%' }}
+=======
+=======
+>>>>>>> c4a16a519 (Initial commit)
                         startAdornment: <InputAdornment position="start">Training Type</InputAdornment>,
                     }}
                     sx={{
                         width: '100%'
                     }}
+<<<<<<< HEAD
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
                 >
                     {trainingOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -128,10 +252,23 @@ export default function InputAdornments({ onSave }) {
                     </MenuItem>
                 </TextField>
             </FormControl>
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+            <FormControl fullWidth variant="standard">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+=======
             <FormControl fullWidth variant="standard">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateTimePicker
                         label="Date and Time"
+>>>>>>> origin/main
+=======
+            <FormControl fullWidth variant="standard">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+>>>>>>> c4a16a519 (Initial commit)
                         value={selectedDate}
                         onChange={(newValue) => setSelectedDate(newValue)}
                         renderInput={(params) => (
@@ -139,7 +276,16 @@ export default function InputAdornments({ onSave }) {
                                 {...params}
                                 variant="standard"
                                 InputProps={{
-                                    startAdornment: <InputAdornment position="start">Date and Time</InputAdornment>,
+<<<<<<< HEAD
+<<<<<<< HEAD
+                                    startAdornment: <InputAdornment position="start">Date</InputAdornment>
+                                }}
+                                sx={{ width: '100%', mb: 2 }} // Margines dolny dla oddzielenia od TimePicker
+                            />
+                        )}
+                    />
+=======
+                                    startAdornment: <InputAdornment position="start">Date</InputAdornment>,
                                     sx: { width: '100%' }
                                 }}
                                 sx={{
@@ -151,6 +297,47 @@ export default function InputAdornments({ onSave }) {
                 </LocalizationProvider>
             </FormControl>
             <FormControl fullWidth variant="standard">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+>>>>>>> c4a16a519 (Initial commit)
+                    <TimePicker
+                        value={selectedTime}
+                        onChange={(newValue) => setSelectedTime(newValue)}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                variant="standard"
+                                InputProps={{
+<<<<<<< HEAD
+                                    startAdornment: <InputAdornment position="start">Time</InputAdornment>
+                                }}
+                                sx={{ width: '100%' }}
+=======
+                                    startAdornment: <InputAdornment position="start">Date and Time</InputAdornment>,
+=======
+                                    startAdornment: <InputAdornment position="start">Time</InputAdornment>,
+>>>>>>> c4a16a519 (Initial commit)
+                                    sx: { width: '100%' }
+                                }}
+                                sx={{
+                                    width: '100%'
+                                }}
+<<<<<<< HEAD
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
+                            />
+                        )}
+                    />
+                </LocalizationProvider>
+            </FormControl>
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
+            <FormControl fullWidth variant="standard">
                 <TextField
                     select
                     id="standard-adornment-location"
@@ -159,9 +346,19 @@ export default function InputAdornments({ onSave }) {
                     InputProps={{
                         startAdornment: <InputAdornment position="start">Location</InputAdornment>
                     }}
+<<<<<<< HEAD
+<<<<<<< HEAD
+                    sx={{ width: '100%' }}
+=======
                     sx={{
                         width: '100%'
                     }}
+>>>>>>> origin/main
+=======
+                    sx={{
+                        width: '100%'
+                    }}
+>>>>>>> c4a16a519 (Initial commit)
                 >
                     {locationOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -173,6 +370,13 @@ export default function InputAdornments({ onSave }) {
                     </MenuItem>
                 </TextField>
             </FormControl>
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
             <FormControl fullWidth variant="standard">
                 <TextField
                     select
@@ -182,9 +386,19 @@ export default function InputAdornments({ onSave }) {
                     InputProps={{
                         startAdornment: <InputAdornment position="start">Horse</InputAdornment>
                     }}
+<<<<<<< HEAD
+<<<<<<< HEAD
+                    sx={{ width: '100%' }}
+=======
                     sx={{
                         width: '100%'
                     }}
+>>>>>>> origin/main
+=======
+                    sx={{
+                        width: '100%'
+                    }}
+>>>>>>> c4a16a519 (Initial commit)
                 >
                     {horseOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -196,6 +410,13 @@ export default function InputAdornments({ onSave }) {
                     </MenuItem>
                 </TextField>
             </FormControl>
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
             <FormControl fullWidth variant="standard">
                 <TextField
                     select
@@ -205,9 +426,19 @@ export default function InputAdornments({ onSave }) {
                     InputProps={{
                         startAdornment: <InputAdornment position="start">Trainer</InputAdornment>
                     }}
+<<<<<<< HEAD
+<<<<<<< HEAD
+                    sx={{ width: '100%' }}
+=======
                     sx={{
                         width: '100%'
                     }}
+>>>>>>> origin/main
+=======
+                    sx={{
+                        width: '100%'
+                    }}
+>>>>>>> c4a16a519 (Initial commit)
                 >
                     {trainerOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -219,48 +450,110 @@ export default function InputAdornments({ onSave }) {
                     </MenuItem>
                 </TextField>
             </FormControl>
-            <Button variant="contained" color="primary" onClick={handleSave}>Save</Button>
+<<<<<<< HEAD
+<<<<<<< HEAD
 
-            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-                <Alert onClose={handleSnackbarClose} severity="success">
-                    Boom! Training saved!
-                </Alert>
-            </Snackbar>
+            <Button variant="contained" color="primary" onClick={handleSave}>
+                Save Training
+            </Button>
+
+            <Dialog open={openDialog.open} onClose={handleClose}>
+                <DialogTitle>Add {openDialog.type}</DialogTitle>
+=======
+            <Button variant="contained" color="primary" onClick={handleSave}>Save</Button>
 
             <Dialog open={openDialog.open} onClose={handleClose}>
                 <DialogTitle>Add New {openDialog.type.charAt(0).toUpperCase() + openDialog.type.slice(1)}</DialogTitle>
+>>>>>>> origin/main
+=======
+            <Button onClick={handleSave} variant="contained">
+                Save
+            </Button>
+
+            <Dialog open={openDialog.open} onClose={handleClose}>
+                <DialogTitle>Add {openDialog.type.charAt(0).toUpperCase() + openDialog.type.slice(1)}</DialogTitle>
+>>>>>>> c4a16a519 (Initial commit)
                 <DialogContent>
                     <TextField
                         autoFocus
                         margin="dense"
+<<<<<<< HEAD
+<<<<<<< HEAD
+                        label={`New ${openDialog.type}`}
+                        type="text"
+                        fullWidth
+                        variant="standard"
+=======
                         id="new-option"
                         label={openDialog.type.charAt(0).toUpperCase() + openDialog.type.slice(1)}
                         type="text"
                         fullWidth
+>>>>>>> origin/main
+=======
+                        label="Option"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+>>>>>>> c4a16a519 (Initial commit)
                         value={newOption}
                         onChange={(e) => setNewOption(e.target.value)}
                     />
                     {openDialog.type === 'training' && (
                         <TextField
                             margin="dense"
-                            id="new-color"
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c4a16a519 (Initial commit)
                             label="Color"
                             type="text"
                             fullWidth
+                            variant="standard"
+<<<<<<< HEAD
+=======
+                            id="new-color"
+                            label="Label Color"
+                            type="text"
+                            fullWidth
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
                             value={newColor}
                             onChange={(e) => setNewColor(e.target.value)}
                         />
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleAddOption} color="primary">
-                        Add
-                    </Button>
+                    <Button onClick={handleClose}>Cancel</Button>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c4a16a519 (Initial commit)
+                    <Button onClick={handleAddOption}>Add</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity="success">
+<<<<<<< HEAD
+                    Training saved successfully!
+                </Alert>a
+=======
+                    Training saved!
+                </Alert>
+>>>>>>> c4a16a519 (Initial commit)
+            </Snackbar>
+        </Box>
+    );
+}
+<<<<<<< HEAD
+=======
+                    <Button onClick={handleAddOption}><b>Add</b></Button>
                 </DialogActions>
             </Dialog>
         </Box>
     );
 }
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)

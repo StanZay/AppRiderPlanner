@@ -4,14 +4,17 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-import IconButton from '@mui/material/IconButton';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import dayjs from 'dayjs';
 import InputAdornments from './InputAdornments';
-import { Plus, ChevronLeft, ChevronRight } from 'lucide-react';
-import { PieChart } from '@mui/x-charts/PieChart';
-import { useDrawingArea } from '@mui/x-charts/hooks';
+import { Plus, TrendingUp } from 'lucide-react';
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import { styled } from '@mui/material/styles';
 
 const trainingTypes = {
@@ -24,120 +27,30 @@ const trainingTypes = {
 };
 
 const trainings = [
-    { date: dayjs('2024-07-29'), type: 'dressage' },
-    { date: dayjs('2024-08-01'), type: 'jumping' },
-    { date: dayjs('2024-08-03'), type: 'crossCountry' },
-    { date: dayjs('2024-08-04'), type: 'endurance' },
-    { date: dayjs('2024-08-05'), type: 'eventing' },
-    { date: dayjs('2024-08-07'), type: 'showJumping' },
-    { date: dayjs('2024-08-10'), type: 'endurance' },
-    { date: dayjs('2024-08-12'), type: 'dressage' },
-    { date: dayjs('2024-08-15'), type: 'jumping' },
-    { date: dayjs('2024-08-20'), type: 'crossCountry' },
-    { date: dayjs('2024-08-25'), type: 'endurance' },
-    { date: dayjs('2024-08-30'), type: 'showJumping' }
+    { date: dayjs('2024-07-29'), type: 'dressage', hours: 1.5 },
+    { date: dayjs('2024-08-01'), type: 'jumping', hours: 2.0 },
+    { date: dayjs('2024-08-03'), type: 'crossCountry', hours: 1.0 },
+    { date: dayjs('2024-08-04'), type: 'endurance', hours: 3.0 },
+    { date: dayjs('2024-08-05'), type: 'eventing', hours: 2.5 },
+    { date: dayjs('2024-08-07'), type: 'showJumping', hours: 2.0 },
+    { date: dayjs('2024-08-10'), type: 'endurance', hours: 1.5 },
+    { date: dayjs('2024-08-12'), type: 'dressage', hours: 1.0 },
+    { date: dayjs('2024-08-15'), type: 'jumping', hours: 2.5 },
+    { date: dayjs('2024-08-20'), type: 'crossCountry', hours: 1.5 },
+    { date: dayjs('2024-08-25'), type: 'endurance', hours: 3.5 },
+    { date: dayjs('2024-08-30'), type: 'showJumping', hours: 2.0 }
 ];
 
-const CalendarWeek = ({ selectedDate, onSelectDate }) => {
-    const [currentWeekStart, setCurrentWeekStart] = useState(selectedDate.startOf('week'));
-    const daysOfWeek = Array.from({ length: 7 }, (_, i) => currentWeekStart.add(i, 'day'));
-
-    const handlePrevWeek = () => {
-        setCurrentWeekStart(prev => prev.subtract(1, 'week'));
-    };
-
-    const handleNextWeek = () => {
-        setCurrentWeekStart(prev => prev.add(1, 'week'));
-    };
-
-    return (
-        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', marginBottom: '10px' }}>
-                <IconButton onClick={handlePrevWeek} sx={{ marginRight: '8px' }}>
-                    <ChevronLeft />
-                </IconButton>
-                <Typography variant="h6" sx={{ flex: 1, textAlign: 'left' }}>
-                    {currentWeekStart.format('MMMM YYYY')}
-                </Typography>
-                <IconButton onClick={handleNextWeek} sx={{ marginLeft: '8px' }}>
-                    <ChevronRight />
-                </IconButton>
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day, index) => (
-                    <Box key={index} sx={{ flex: 1, textAlign: 'center' }}>
-                        <Typography variant="caption">{day}</Typography>
-                    </Box>
-                ))}
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                {daysOfWeek.map((day) => {
-                    const isToday = day.isSame(dayjs(), 'day');
-                    const trainingsForDay = trainings.filter(training => training.date.isSame(day, 'day'));
-
-                    return (
-                        <Button
-                            key={day.format('YYYY-MM-DD')}
-                            onClick={() => onSelectDate(day)}
-                            sx={{
-                                flex: 1,
-                                padding: '16px',
-                                borderRadius: '50%',
-                                backgroundColor: isToday ? 'gray' : 'transparent',
-                                color: isToday ? 'white' : 'text.primary',
-                                border: 'none',
-                                minWidth: '40px',
-                                minHeight: '40px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                position: 'relative',
-                                aspectRatio: '1 / 1',
-                                '&:hover': {
-                                    backgroundColor: isToday ? 'darkgray' : 'rgba(0, 0, 0, 0.1)',
-                                },
-                            }}
-                        >
-                            <Typography variant="body2" sx={{ marginBottom: '4px' }}>
-                                {day.format('D')}
-                            </Typography>
-                            {trainingsForDay.map((training, idx) => (
-                                <Box
-                                    key={idx}
-                                    sx={{
-                                        position: 'absolute',
-                                        bottom: `calc(4px + ${8 * idx}px)`,
-                                        left: `calc(50% - ${8}px)`,
-                                        width: '8px',
-                                        height: '8px',
-                                        borderRadius: '50%',
-                                        backgroundColor: trainingTypes[training.type]?.color || 'gray',
-                                    }}
-                                />
-                            ))}
-                        </Button>
-                    );
-                })}
-            </Box>
-        </Box>
-    );
+const getTrainingCounts = () => {
+    return Object.keys(trainingTypes).map(type => ({
+        id: type,
+        label: trainingTypes[type].label,
+        value: trainings.filter(training => training.type === type).reduce((total, training) => total + training.hours, 0),
+        color: trainingTypes[type].color
+    }));
 };
 
-const StyledText = styled('text')(({ theme }) => ({
-    fill: theme.palette.text.primary,
-    textAnchor: 'middle',
-    dominantBaseline: 'central',
-    fontSize: 20,
-}));
-
-function PieCenterLabel({ children }) {
-    const { width, height, left, top } = useDrawingArea();
-    return (
-        <StyledText x={left + width / 2} y={top + height / 2}>
-            {children}
-        </StyledText>
-    );
-}
+const chartData = getTrainingCounts();
 
 const StyledLabel = styled('text')(({ theme }) => ({
     fill: theme.palette.text.primary,
@@ -145,14 +58,6 @@ const StyledLabel = styled('text')(({ theme }) => ({
     dominantBaseline: 'central',
     fontSize: 14,
 }));
-
-function CustomLabel({ x, y, value }) {
-    return (
-        <StyledLabel x={x + 10} y={y +120}>
-            {value}
-        </StyledLabel>
-    );
-}
 
 function CalendarContent() {
     const [selectedDate, setSelectedDate] = useState(dayjs());
@@ -175,58 +80,128 @@ function CalendarContent() {
         setOpenDialog(false);
     };
 
-    const getTrainingCounts = () => {
-        return Object.keys(trainingTypes).map(type => ({
-            id: type,
-            label: trainingTypes[type].label,
-            value: trainings.filter(training => training.type === type).length,
-            color: trainingTypes[type].color
-        }));
+    const getDayContent = (day) => {
+        const trainingsForDay = trainings.filter(training => training.date.isSame(day, 'day'));
+        return (
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Typography variant="body2">{day.format('D')}</Typography>
+                {trainingsForDay.map((training, idx) => (
+                    <Box
+                        key={idx}
+                        sx={{
+                            width: '8px',
+                            height: '8px',
+                            borderRadius: '50%',
+                            backgroundColor: trainingTypes[training.type]?.color || 'gray',
+                            marginTop: '2px',
+                        }}
+                    />
+                ))}
+            </Box>
+        );
     };
 
-    const chartData = getTrainingCounts();
-
     return (
-        <Box sx={{ padding: '20px', width: '100%', boxSizing: 'border-box' }}>
+        <Box sx={{ padding: '20px', width: '100%', boxSizing: 'border-box', position: 'relative' }}>
             <Typography variant="h4" gutterBottom>
                 Calendar
             </Typography>
+            <Box sx={{ backgroundColor: '#D4D9DB', padding: '16px', borderRadius: '8px', marginBottom: '20px' }}>
+                <Card>
+                    <CardHeader
+                        title="Training Types"
+                        subheader="Data for training types"
+                    />
+                    <CardContent>
+                        <ResponsiveContainer width="100%" height={400}>
+                            <BarChart
+                                data={chartData}
+                                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis
+                                    dataKey="label"
+                                    tickLine={false}
+                                    tickMargin={10}
+                                    axisLine={false}
+                                />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend
+                                    formatter={(value, entry) => (
+                                        <Box component="span" sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Box
+                                                sx={{
+                                                    width: '10px',
+                                                    height: '10px',
+                                                    borderRadius: '50%',
+                                                    backgroundColor: entry.color,
+                                                    marginRight: '8px'
+                                                }}
+                                            />
+                                            <Typography variant="body2">{value}</Typography>
+                                        </Box>
+                                    )}
+                                />
+                                <Bar dataKey="value" radius={[10, 10, 0, 0]} background={{ fill: '#eee' }}>
+                                    {chartData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                    ))}
+                                </Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </CardContent>
+                    <CardActions sx={{ justifyContent: 'space-between', padding: '16px' }}>
+                        <Typography variant="body2" color="textSecondary">
+                            Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                            Showing training data
+                        </Typography>
+                    </CardActions>
+                </Card>
+            </Box>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <CalendarWeek
-                    selectedDate={selectedDate}
-                    onSelectDate={handleDateChange}
+                <StaticDatePicker
+                    displayStaticWrapperAs="desktop"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    renderDay={(day, _value, DayComponent) => {
+                        const trainingsForDay = trainings.filter(training => training.date.isSame(day, 'day'));
+                        return (
+                            <Box sx={{ position: 'relative' }}>
+                                <DayComponent />
+                                {trainingsForDay.map((training, idx) => (
+                                    <Box
+                                        key={idx}
+                                        sx={{
+                                            width: '8px',
+                                            height: '8px',
+                                            borderRadius: '50%',
+                                            backgroundColor: trainingTypes[training.type]?.color || 'gray',
+                                            position: 'absolute',
+                                            bottom: 4,
+                                            left: '50%',
+                                            transform: 'translateX(-50%)',
+                                            zIndex: 1,
+                                        }}
+                                    />
+                                ))}
+                            </Box>
+                        );
+                    }}
+                    renderInput={(params) => <Box {...params} />}
                 />
             </LocalizationProvider>
             <Button
                 variant="contained"
                 color="primary"
                 onClick={handleAddTraining}
-                sx={{ marginTop: '20px', display: 'flex', alignItems: 'center' }}
+                sx={{ textTransform: 'none', position: 'absolute', bottom: '20px', right: '20px' }}
             >
                 <Plus style={{ marginRight: '8px' }} />
                 Add Task
             </Button>
-            <Box sx={{ marginTop: '40px', width: 'calc(100% - 40px)', backgroundColor: '#D4D9DB', padding: '16px', borderRadius: '8px', margin: '0 auto', display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', marginRight: '40px' }}>
-                    <PieChart
-                        series={[
-                            {
-                                data: chartData.map(item => ({
-                                    value: item.value,
-                                    label: item.label,
-                                    color: item.color
-                                })),
-                                innerRadius: 80,
-                                label: CustomLabel, // Użyj niestandardowej etykiety
-                            }
-                        ]}
-                        width={400}
-                        height={200}
-                    >
-                        <PieCenterLabel>Training Type</PieCenterLabel>
-                    </PieChart>
-                </Box>
-            </Box>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogContent>
                     <InputAdornments onSave={handleSaveTraining} />

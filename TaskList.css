@@ -6,6 +6,10 @@
 .task-item {
     display: flex;
     align-items: center;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c4a16a519 (Initial commit)
     margin-bottom: 20px;
 }
 
@@ -15,6 +19,20 @@
 
 .task-item button {
     margin-left: 20px;
+<<<<<<< HEAD
+=======
+    margin-bottom: 10px;
+}
+
+.task-item input[type="text"] {
+    margin-right: 10px;
+}
+
+.task-item button {
+    margin-left: 10px;
+>>>>>>> origin/main
+=======
+>>>>>>> c4a16a519 (Initial commit)
 }
 
 .round-checkbox {
